@@ -19,7 +19,7 @@ filtro por grupo de usuários e cards com temas.
 ### Menu Administrativo
 
 * Novo item de menu **Notice Board** em **Monitoring** para todos os usuários e em **Administration** para Super Admin
-* Visível para **Admin** tipo 2 (somente leitura) e **Super Admin** tipo 3 no modo administrativo
+* Painel administrativo no menu apenas para **Super Admin** (em **Administration**); Admin e Usuário veem o Notice Board somente em **Monitoring**
 * Lista todos os avisos com filtros de busca, tipo e status
 * Criação, edição e exclusão de avisos exclusivas do **Super Admin**
 
@@ -135,12 +135,13 @@ mysql -u root -p zabbix < api/migrate_v1.4.sql
 | Ação                         | Usuário | Admin | Super Admin |
 | ---------------------------- | ------- | ----- | ----------- |
 | Visualizar widget            | v       | v     | v           |
-| Visualizar menu Notice Board | x       | v     | v           |
+| Menu Monitoring > Notice Board               | v       | v     | v           |
+| Menu Administration > Notice Board (painel)  | x       | x     | v           |
 | Criar aviso                  | x       | x     | v           |
 | Editar / Excluir aviso       | x       | x     | v           |
 | Gerenciar qualquer grupo     | x       | x     | v           |
 
-*Desde a v1.5.0, o Admin acessa o painel apenas para leitura (vê os avisos dos seus grupos). Somente o Super Admin cria, edita e exclui avisos, e enxerga todos os avisos no painel. Na API, o `criado_por` do `POST /api/avisos` precisa ser um usuário Super Admin (senão `403 FORBIDDEN`).*
+*Desde a v1.5.0, o Admin acessa o painel apenas para leitura (vê os avisos dos seus grupos), e desde a v1.5.1 sem item de menu: só pela URL `zabbix.php?action=notice_board.view`. Somente o Super Admin cria, edita e exclui avisos, e enxerga todos os avisos no painel. Na API, o `criado_por` do `POST /api/avisos` precisa ser um usuário Super Admin (senão `403 FORBIDDEN`).*
 
 ---
 

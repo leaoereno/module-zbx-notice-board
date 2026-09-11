@@ -25,33 +25,25 @@ class Module extends CModule {
             ->getSubMenu()
             ->add((new CMenuItem(_('Notice Board')))->setAction('notice_board.dashboard'));
 
-        if (!in_array(CWebUser::getType(), [USER_TYPE_ZABBIX_ADMIN, USER_TYPE_SUPER_ADMIN])) {
+        // Painel de gestão no menu: somente Super Admin (único que cria/edita/exclui).
+        // Admin e Usuário veem o Notice Board apenas em Monitoramento.
+        if (CWebUser::getType() !== USER_TYPE_SUPER_ADMIN) {
             return;
         }
 
         $adminItem = (new CMenuItem(_('Notice Board')))
             ->setAction('notice_board.view');
 
-        if (CWebUser::getType() === USER_TYPE_SUPER_ADMIN) {
-            // Super Admin: anexa dentro de "Administração" (sem ícone próprio, herda estrutura)
-            foreach ($menu->getMenuItems() as $item) {
-                if ($item->getLabel() === _('Administration') || $item->getLabel() === 'Administration') {
-                    $item->getSubMenu()->add($adminItem);
-                    return;
-                }
+        // Super Admin: anexa dentro de "Administração" (sem ícone próprio, herda estrutura)
+        foreach ($menu->getMenuItems() as $item) {
+            if ($item->getLabel() === _('Administration') || $item->getLabel() === 'Administration') {
+                $item->getSubMenu()->add($adminItem);
+                return;
             }
-            // Fallback Super Admin
-            $menu->add($adminItem);
-            return;
         }
 
-        // Admin (type=2): cria item raiz com ícone ZBX_ICON_BELL
-        // O Admin não tem menu "Administração", então o item fica no nível raiz
-        // e precisa de ícone explícito para aparecer corretamente na sidebar.
-        $menu->add(
-            (new CMenuItem(_('Notice Board')))
-                ->setIcon(ZBX_ICON_BELL)
-                ->setAction('notice_board.view')
-        );
+        // Fallback: menu "Administração" não encontrado. Item raiz precisa de
+        // ícone explícito para aparecer corretamente na sidebar.
+        $menu->add($adminItem->setIcon(ZBX_ICON_BELL));
     }
 }
