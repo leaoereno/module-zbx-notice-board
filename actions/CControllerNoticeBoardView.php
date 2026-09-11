@@ -23,17 +23,28 @@ class CControllerNoticeBoardView extends CController {
     protected function doAction(): void {
         $userid       = (int) CWebUser::$data['userid'];
         $isSuperAdmin = $this->getUserType() === USER_TYPE_SUPER_ADMIN;
-        $grpids       = $this->getUserGroupIds($userid);
         $notices      = [];
 
-        if ($grpids) {
-            $placeholders = implode(',', $grpids);
+        // Super Admin e o unico perfil que gerencia avisos, entao enxerga todos,
+        // inclusive os direcionados a grupos dos quais ele nao participa.
+        // Admin (somente leitura) continua vendo apenas os avisos dos seus grupos.
+        $where = null;
+        if ($isSuperAdmin) {
+            $where = '';
+        } else {
+            $grpids = $this->getUserGroupIds($userid);
+            if ($grpids) {
+                $where = ' WHERE (n.usrgrpid IN (' . implode(',', $grpids) . ') OR n.para_todos = 1)';
+            }
+        }
+
+        if ($where !== null) {
             $result = DBselect(
                 'SELECT n.id, n.titulo, n.conteudo, n.tipo_borda, n.usrgrpid, n.para_todos,' .
                 ' n.inicio, n.fim, n.criado_em, n.criado_por, u.username AS usuario_nome' .
                 ' FROM notice_board n' .
                 ' LEFT JOIN users u ON u.userid = n.criado_por' .
-                ' WHERE (n.usrgrpid IN (' . $placeholders . ') OR n.para_todos = 1)' .
+                $where .
                 ' ORDER BY n.criado_em DESC'
             );
             while ($row = DBfetch($result)) {

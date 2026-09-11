@@ -5,7 +5,6 @@ namespace Modules\NoticeBoardModule\Actions;
 use CController;
 use CControllerResponseData;
 use CControllerResponseRedirect;
-use CWebUser;
 use CUrl;
 
 class CControllerNoticeBoardEdit extends CController {
@@ -18,48 +17,35 @@ class CControllerNoticeBoardEdit extends CController {
         return $this->validateInput(['id' => 'required|int32']);
     }
 
+    // Somente Super Admin edita avisos. Admin acessa o painel apenas para leitura.
     protected function checkPermissions(): bool {
-        return $this->getUserType() >= USER_TYPE_ZABBIX_ADMIN;
+        return $this->getUserType() === USER_TYPE_SUPER_ADMIN;
     }
 
     protected function doAction(): void {
-        $id           = (int) $this->getInput('id');
-        $isSuperAdmin = $this->getUserType() === USER_TYPE_SUPER_ADMIN;
-        $userid       = (int) CWebUser::$data['userid'];
+        $id = (int) $this->getInput('id');
 
         $result = DBselect('SELECT * FROM notice_board WHERE id=' . $id);
         $notice = DBfetch($result) ?: null;
 
-        if (!$notice || (!$isSuperAdmin && (int) $notice['criado_por'] !== $userid)) {
+        if (!$notice) {
             $this->setResponse(new CControllerResponseRedirect(
                 (new CUrl('zabbix.php'))->setArgument('action', 'notice_board.view')
             ));
             return;
         }
 
-        if ($isSuperAdmin) {
-            $groups = [];
-            $result = DBselect('SELECT usrgrpid, name FROM usrgrp ORDER BY name');
-            while ($row = DBfetch($result)) {
-                $groups[] = $row;
-            }
-        } else {
-            $groups = [];
-            $result = DBselect(
-                'SELECT g.usrgrpid, g.name FROM usrgrp g' .
-                ' INNER JOIN users_groups ug ON ug.usrgrpid = g.usrgrpid' .
-                ' WHERE ug.userid=' . $userid . ' ORDER BY g.name'
-            );
-            while ($row = DBfetch($result)) {
-                $groups[] = $row;
-            }
+        $groups = [];
+        $result = DBselect('SELECT usrgrpid, name FROM usrgrp ORDER BY name');
+        while ($row = DBfetch($result)) {
+            $groups[] = $row;
         }
 
         $this->setResponse(new CControllerResponseData([
             'notice'         => $notice,
             'groups'         => $groups,
             'mode'           => 'edit',
-            'is_super_admin' => $isSuperAdmin,
+            'is_super_admin' => true,
         ]));
     }
 }

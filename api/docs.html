@@ -450,7 +450,7 @@
               <tr><td><span class="param-name">titulo</span></td><td><span class="param-type">string</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc">Titulo. Max 255 chars.</td></tr>
               <tr><td><span class="param-name">conteudo</span></td><td><span class="param-type">string</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc">Corpo em Markdown ou HTML.</td></tr>
               <tr><td><span class="param-name">tipo_borda</span></td><td><span class="param-type">string</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc"><span class="param-enum">info|success|warning|danger|mudanca|evento</span></td></tr>
-              <tr><td><span class="param-name">criado_por</span></td><td><span class="param-type">integer</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc">userid do Zabbix responsavel.</td></tr>
+              <tr><td><span class="param-name">criado_por</span></td><td><span class="param-type">integer</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc">userid do Zabbix responsavel. Precisa ter perfil <b>Super Admin</b> (senao 403).</td></tr>
               <tr><td><span class="param-name">inicio</span></td><td><span class="param-type">string</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc">ISO 8601: <code style="font-family:var(--mono);color:var(--cyan)">2025-06-01T08:00:00</code></td></tr>
               <tr><td><span class="param-name">fim</span></td><td><span class="param-type">string</span></td><td><span class="param-required">obrigatorio</span></td><td class="param-desc">ISO 8601. Deve ser posterior a inicio.</td></tr>
               <tr><td><span class="param-name">usrgrpid</span></td><td><span class="param-type">integer</span></td><td><span class="param-required">condicional</span></td><td class="param-desc">ID do grupo. Obrigatorio se para_todos=false.</td></tr>
@@ -482,6 +482,14 @@
           <div class="response-item">
             <div class="response-header" onclick="toggleResponse('r3-201')"><span class="status-code s-2xx">201</span><span class="response-desc">Aviso criado com sucesso</span><span class="expand-icon">&#9660;</span></div>
             <div class="response-body open" id="r3-201"><div class="code-block"><pre>{ <span class="key">"success"</span>: <span class="bool">true</span>, <span class="key">"data"</span>: { <span class="key">"id"</span>: <span class="num">43</span>, <span class="key">"status"</span>: <span class="str">"scheduled"</span>, <span class="cmt">/* ... */</span> } }</pre></div></div>
+          </div>
+          <div class="response-item">
+            <div class="response-header" onclick="toggleResponse('r3-403')"><span class="status-code s-4xx">403</span><span class="response-desc">criado_por nao e Super Admin</span><span class="expand-icon">&#9654;</span></div>
+            <div class="response-body" id="r3-403"><div class="code-block"><pre>{
+  <span class="key">"success"</span>: <span class="bool">false</span>,
+  <span class="key">"error"</span>: { <span class="key">"code"</span>: <span class="str">"FORBIDDEN"</span>, <span class="key">"message"</span>: <span class="str">"Only Super Admin users can create notices."</span> },
+  <span class="key">"errors"</span>: [ { <span class="key">"field"</span>: <span class="str">"criado_por"</span>, <span class="key">"message"</span>: <span class="str">"userid=5 does not have a Super Admin role."</span> } ]
+}</pre></div></div>
           </div>
           <div class="response-item">
             <div class="response-header" onclick="toggleResponse('r3-422')"><span class="status-code s-4xx">422</span><span class="response-desc">Erro de validacao</span><span class="expand-icon">&#9654;</span></div>

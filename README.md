@@ -19,9 +19,9 @@ filtro por grupo de usuários e cards com temas.
 ### Menu Administrativo
 
 * Novo item de menu **Notice Board** em **Monitoring** para todos os usuários e em **Administration** para Super Admin
-* Visível para **Admin** tipo 2 e **Super Admin** tipo 3 no modo administrativo
+* Visível para **Admin** tipo 2 (somente leitura) e **Super Admin** tipo 3 no modo administrativo
 * Lista todos os avisos com filtros de busca, tipo e status
-* Permite criar, editar e excluir cada card
+* Criação, edição e exclusão de avisos exclusivas do **Super Admin**
 
 ### Formulário de Aviso
 
@@ -37,7 +37,7 @@ filtro por grupo de usuários e cards com temas.
   * `mudanca` -- Requisição de Mudança roxo
   * `evento`  -- Evento / Manutenção ciano
 * Agendamento: exibição de/até
-* Seleção de grupo de usuários: único para Admin, múltiplo para Super Admin
+* Seleção de um ou mais grupos de usuários, ou de todos os grupos
 
 ### API REST v1.4.0
 
@@ -136,11 +136,11 @@ mysql -u root -p zabbix < api/migrate_v1.4.sql
 | ---------------------------- | ------- | ----- | ----------- |
 | Visualizar widget            | v       | v     | v           |
 | Visualizar menu Notice Board | x       | v     | v           |
-| Criar / Editar aviso         | x       | v*    | v           |
-| Excluir aviso                | x       | v*    | v           |
+| Criar aviso                  | x       | x     | v           |
+| Editar / Excluir aviso       | x       | x     | v           |
 | Gerenciar qualquer grupo     | x       | x     | v           |
 
-*Admin só pode gerenciar avisos criados por ele, dentro de seus próprios grupos.*
+*Desde a v1.5.0, o Admin acessa o painel apenas para leitura (vê os avisos dos seus grupos). Somente o Super Admin cria, edita e exclui avisos, e enxerga todos os avisos no painel. Na API, o `criado_por` do `POST /api/avisos` precisa ser um usuário Super Admin (senão `403 FORBIDDEN`).*
 
 ---
 

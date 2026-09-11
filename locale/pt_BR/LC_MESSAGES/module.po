@@ -153,3 +153,7 @@ msgstr "Excluir"
 
 msgid "Confirm deletion?"
 msgstr "Confirma exclusão?"
+
+# Permissões
+msgid "Read-only: only Super Admin can create, edit or delete notices."
+msgstr "Somente leitura: apenas o Super Admin pode criar, editar ou excluir avisos."

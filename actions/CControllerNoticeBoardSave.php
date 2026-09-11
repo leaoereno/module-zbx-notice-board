@@ -25,17 +25,18 @@ class CControllerNoticeBoardSave extends CController {
         ]);
     }
 
+    // Somente Super Admin cria ou altera avisos (vale para create e update).
+    // Admin acessa o painel apenas para leitura.
     protected function checkPermissions(): bool {
-        return $this->getUserType() >= USER_TYPE_ZABBIX_ADMIN;
+        return $this->getUserType() === USER_TYPE_SUPER_ADMIN;
     }
 
     protected function doAction(): void {
-        $id           = (int) $this->getInput('id', 0);
-        $titulo       = zbx_dbstr($this->getInput('titulo'));
-        $conteudo     = zbx_dbstr($this->getInput('conteudo'));
-        $tipoBorda    = zbx_dbstr($this->getInput('tipo_borda'));
-        $userid       = (int) CWebUser::$data['userid'];
-        $isSuperAdmin = $this->getUserType() === USER_TYPE_SUPER_ADMIN;
+        $id        = (int) $this->getInput('id', 0);
+        $titulo    = zbx_dbstr($this->getInput('titulo'));
+        $conteudo  = zbx_dbstr($this->getInput('conteudo'));
+        $tipoBorda = zbx_dbstr($this->getInput('tipo_borda'));
+        $userid    = (int) CWebUser::$data['userid'];
 
         // Parse datetime-local: input arrives as "YYYY-MM-DDTHH:MM" (no seconds)
         $inicioRaw = str_replace('T', ' ', $this->getInput('inicio'));
@@ -53,20 +54,11 @@ class CControllerNoticeBoardSave extends CController {
             $grpids = [0];
         }
 
+        // "Todos os grupos" (valor 0) ignora os demais grupos selecionados
         $paraTodos = 0;
         if (in_array(0, $grpids)) {
-            if ($isSuperAdmin) {
-                $paraTodos = 1;
-                $grpids    = [null];
-            } else {
-                $grpids = array_filter($grpids, fn($v) => $v > 0);
-                if (!$grpids) {
-                    $this->setResponse(new CControllerResponseRedirect(
-                        (new CUrl('zabbix.php'))->setArgument('action', 'notice_board.view')
-                    ));
-                    return;
-                }
-            }
+            $paraTodos = 1;
+            $grpids    = [null];
         }
 
         if ($id === 0) {

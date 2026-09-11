@@ -6,7 +6,7 @@
  * Endpoints:
  *   GET  /api/avisos              — Lista avisos (com filtros opcionais)
  *   GET  /api/avisos/{id}         — Busca aviso por ID
- *   POST /api/avisos              — Cria novo aviso
+ *   POST /api/avisos              — Cria novo aviso (criado_por precisa ser Super Admin)
  *
  * Autenticação: Bearer Token (Zabbix API token ou token externo configurado)
  * Respostas:    JSON, UTF-8
@@ -266,7 +266,8 @@ function handleGetById(int $id): void
  *   para_todos  bool    (opcional)     true = visível para todos os grupos
  *   inicio      string  (obrigatório)  ISO 8601: 2025-06-01T08:00:00
  *   fim         string  (obrigatório)  ISO 8601: 2025-06-30T18:00:00
- *   criado_por  int     (obrigatório)  userid do Zabbix (usuário criador)
+ *   criado_por  int     (obrigatório)  userid do Zabbix (usuário criador). Precisa ter
+ *                                      perfil Super Admin (role type 3), senão 403 FORBIDDEN.
  *   source      string  (opcional)     Identificador da fonte remota (ex: "grafana", "servicenow")
  */
 function handlePost(): void
@@ -350,11 +351,24 @@ function handlePost(): void
         ApiResponse::error(422, 'VALIDATION_ERROR', 'Request validation failed.', ['errors' => $errors]);
     }
 
-    // ── Verifica existência do usuário criador ────────────────────────────────
-    $userCheck = DBfetch(DBselect('SELECT userid FROM users WHERE userid=' . $criadoPor));
+    // ── Verifica existência do usuário criador e se ele é Super Admin ─────────
+    // A tabela users não tem coluna "type": o tipo vem de role.type via users.roleid.
+    $userCheck = DBfetch(DBselect(
+        'SELECT u.userid, r.type' .
+        ' FROM users u' .
+        ' LEFT JOIN role r ON r.roleid = u.roleid' .
+        ' WHERE u.userid=' . $criadoPor
+    ));
     if (!$userCheck) {
         ApiResponse::error(422, 'VALIDATION_ERROR', "User criado_por=$criadoPor not found in Zabbix.", [
             'errors' => [['field' => 'criado_por', 'message' => "userid=$criadoPor does not exist."]]
+        ]);
+    }
+
+    // Somente Super Admin cria avisos (mesma regra da interface web)
+    if ((int)($userCheck['type'] ?? 0) !== USER_TYPE_SUPER_ADMIN) {
+        ApiResponse::error(403, 'FORBIDDEN', 'Only Super Admin users can create notices.', [
+            'errors' => [['field' => 'criado_por', 'message' => "userid=$criadoPor does not have a Super Admin role."]]
         ]);
     }
 

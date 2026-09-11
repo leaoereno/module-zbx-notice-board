@@ -3,7 +3,7 @@
  * @var array  $data['notices']
  * @var array  $data['groups']
  * @var int    $data['user_id']
- * @var bool   $data['is_super_admin']
+ * @var bool   $data['is_super_admin']  somente Super Admin cria/edita/exclui
  */
 
 $type_labels = [
@@ -31,7 +31,6 @@ function nb_status_label(string $s): string {
 }
 
 $isSuperAdmin = $data['is_super_admin'];
-$currentUser  = (int) $data['user_id'];
 ?>
 <div class="nb-page-wrap">
     <div class="nb-header">
@@ -39,9 +38,15 @@ $currentUser  = (int) $data['user_id'];
             <span class="nb-icon">&#128203;</span>
             <h1><?= _('Notice Board') ?></h1>
         </div>
-        <a href="zabbix.php?action=notice_board.create" class="btn-action btn-create">
-            + <?= _('New Notice') ?>
-        </a>
+        <?php if ($isSuperAdmin): ?>
+            <a href="zabbix.php?action=notice_board.create" class="btn-action btn-create">
+                + <?= _('New Notice') ?>
+            </a>
+        <?php else: ?>
+            <span class="nb-hint">
+                &#128274; <?= _('Read-only: only Super Admin can create, edit or delete notices.') ?>
+            </span>
+        <?php endif ?>
     </div>
 
     <?php if (empty($data['notices'])): ?>
@@ -81,7 +86,7 @@ $currentUser  = (int) $data['user_id'];
                 if (!empty($notice['para_todos'])) {
                     $grpName = '&#127760; ' . _('All groups');
                 }
-                $canEdit = $isSuperAdmin || (int) $notice['criado_por'] === $currentUser;
+                $canEdit = $isSuperAdmin;
             ?>
                 <div class="nb-card nb-card--<?= htmlspecialchars($notice['tipo_borda']) ?>"
                      data-tipo="<?= htmlspecialchars($notice['tipo_borda']) ?>"

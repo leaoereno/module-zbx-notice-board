@@ -150,3 +150,7 @@ msgstr "Delete"
 
 msgid "Confirm deletion?"
 msgstr "Confirm deletion?"
+
+# Permissions
+msgid "Read-only: only Super Admin can create, edit or delete notices."
+msgstr "Read-only: only Super Admin can create, edit or delete notices."

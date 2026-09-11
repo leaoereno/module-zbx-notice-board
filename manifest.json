@@ -1,8 +1,8 @@
 {
-    "manifest_version": 2.0,
+    "manifest_version": 2,
     "id": "notice_board",
     "name": "Notice Board",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "namespace": "NoticeBoardModule",
     "description": "Notice board module for communicating incidents, change requests and events to teams using Zabbix. Supports Markdown/HTML, scheduling, user group filtering and themed cards.",
     "author": "Rafael M. A. Leão Ereno - MALE",
