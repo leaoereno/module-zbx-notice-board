@@ -12,8 +12,8 @@ msgstr ""
 msgid "Notice Board"
 msgstr "Notice Board"
 
-msgid "Monitoring"
-msgstr "Monitoring"
+msgid "Services"
+msgstr "Services"
 
 # Notice types
 msgid "Informational"

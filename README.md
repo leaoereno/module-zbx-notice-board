@@ -18,8 +18,9 @@ filtro por grupo de usuários e cards com temas.
 
 ### Menu Administrativo
 
-* Novo item de menu **Notice Board** em **Monitoring** para todos os usuários e em **Administration** para Super Admin
-* Painel administrativo no menu apenas para **Super Admin** (em **Administration**); Admin e Usuário veem o Notice Board somente em **Monitoring**
+* Novo item de menu **Notice Board** / **Mural de Recados** em **Services** (Serviços) para todos os usuários e em **Administration** para Super Admin
+* Painel administrativo no menu apenas para **Super Admin** (em **Administration**); Admin e Usuário veem o Notice Board somente em **Services**
+* Desde a v1.6.0, o rótulo do menu e todos os textos da interface acompanham o idioma selecionado pelo usuário no Zabbix (Inglês ou Português — chamado "Mural de Recados" em pt_BR)
 * Lista todos os avisos com filtros de busca, tipo e status
 * Criação, edição e exclusão de avisos exclusivas do **Super Admin**
 
@@ -135,7 +136,7 @@ mysql -u root -p zabbix < api/migrate_v1.4.sql
 | Ação                         | Usuário | Admin | Super Admin |
 | ---------------------------- | ------- | ----- | ----------- |
 | Visualizar widget            | v       | v     | v           |
-| Menu Monitoring > Notice Board               | v       | v     | v           |
+| Menu Services > Notice Board                  | v       | v     | v           |
 | Menu Administration > Notice Board (painel)  | x       | x     | v           |
 | Criar aviso                  | x       | x     | v           |
 | Editar / Excluir aviso       | x       | x     | v           |

@@ -1,6 +1,8 @@
 <?php
 namespace Modules\NoticeBoardModule;
 
+require_once __DIR__ . '/include/i18n.php';
+
 use Zabbix\Core\CModule;
 use APP;
 use CMenuItem;
@@ -20,18 +22,20 @@ class Module extends CModule {
             return;
         }
 
-        // Submenu em Monitoramento: visível para todos os perfis
-        $menu->findOrAdd(_('Monitoring'))
+        // Submenu em Serviços: visível para todos os perfis.
+        // Rótulo "Notice Board" segue o idioma do Zabbix do usuário (nb__()),
+        // já que _() só traduz strings do catálogo nativo do Zabbix.
+        $menu->findOrAdd(_('Services'))
             ->getSubMenu()
-            ->add((new CMenuItem(_('Notice Board')))->setAction('notice_board.dashboard'));
+            ->add((new CMenuItem(nb__('Notice Board')))->setAction('notice_board.dashboard'));
 
         // Painel de gestão no menu: somente Super Admin (único que cria/edita/exclui).
-        // Admin e Usuário veem o Notice Board apenas em Monitoramento.
+        // Admin e Usuário veem o Notice Board apenas em Serviços.
         if (CWebUser::getType() !== USER_TYPE_SUPER_ADMIN) {
             return;
         }
 
-        $adminItem = (new CMenuItem(_('Notice Board')))
+        $adminItem = (new CMenuItem(nb__('Notice Board')))
             ->setAction('notice_board.view');
 
         // Super Admin: anexa dentro de "Administração" (sem ícone próprio, herda estrutura)

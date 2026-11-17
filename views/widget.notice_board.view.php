@@ -36,19 +36,19 @@ if ($grpids) {
 }
 
 $type_labels = [
-    'info'    => _('Informational'),
-    'success' => _('Resolved'),
-    'warning' => _('Warning'),
-    'danger'  => _('Critical / Urgent'),
-    'mudanca' => _('Change Request'),
-    'evento'  => _('Event / Maintenance'),
+    'info'    => nb__('Informational'),
+    'success' => nb__('Resolved'),
+    'warning' => nb__('Warning'),
+    'danger'  => nb__('Critical / Urgent'),
+    'mudanca' => nb__('Change Request'),
+    'evento'  => nb__('Event / Maintenance'),
 ];
 ?>
 
 <div class="nb-widget-wrap">
     <?php if (empty($notices)): ?>
         <div class="nb-widget-empty">
-            &#128237; <?= _('No active notices at this time.') ?>
+            &#128237; <?= nb__('No active notices at this time.') ?>
         </div>
     <?php else: ?>
         <div class="nb-widget-list">
@@ -67,7 +67,7 @@ $type_labels = [
                     <div class="nb-widget-body nb-rendered"
                          data-raw="<?= htmlspecialchars($notice['conteudo']) ?>"></div>
                     <div class="nb-widget-validity">
-                        &#128197; <?= _('Until') ?> <?= (new DateTime($notice['fim']))->format('d/m/Y H:i') ?>
+                        &#128197; <?= nb__('Until') ?> <?= (new DateTime($notice['fim']))->format('d/m/Y H:i') ?>
                     </div>
                 </div>
             <?php endforeach ?>

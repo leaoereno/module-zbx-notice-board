@@ -7,12 +7,12 @@
  */
 
 $type_labels = [
-    'info'    => 'i ' . _('Informational'),
-    'success' => 'v ' . _('Resolved'),
-    'warning' => '! ' . _('Warning'),
-    'danger'  => 'x ' . _('Critical / Urgent'),
-    'mudanca' => 'c ' . _('Change Request'),
-    'evento'  => 'e ' . _('Event / Maintenance'),
+    'info'    => 'i ' . nb__('Informational'),
+    'success' => 'v ' . nb__('Resolved'),
+    'warning' => '! ' . nb__('Warning'),
+    'danger'  => 'x ' . nb__('Critical / Urgent'),
+    'mudanca' => 'c ' . nb__('Change Request'),
+    'evento'  => 'e ' . nb__('Event / Maintenance'),
 ];
 
 function nb_status(string $inicio, string $fim): string {
@@ -24,9 +24,9 @@ function nb_status(string $inicio, string $fim): string {
 
 function nb_status_label(string $s): string {
     return [
-        'active'    => '&#9679; ' . _('Active'),
-        'scheduled' => '&#9711; ' . _('Scheduled'),
-        'expired'   => '&#9675; ' . _('Expired'),
+        'active'    => '&#9679; ' . nb__('Active'),
+        'scheduled' => '&#9711; ' . nb__('Scheduled'),
+        'expired'   => '&#9675; ' . nb__('Expired'),
     ][$s] ?? $s;
 }
 
@@ -36,15 +36,15 @@ $isSuperAdmin = $data['is_super_admin'];
     <div class="nb-header">
         <div class="nb-header-title">
             <span class="nb-icon">&#128203;</span>
-            <h1><?= _('Notice Board') ?></h1>
+            <h1><?= nb__('Notice Board') ?></h1>
         </div>
         <?php if ($isSuperAdmin): ?>
             <a href="zabbix.php?action=notice_board.create" class="btn-action btn-create">
-                + <?= _('New Notice') ?>
+                + <?= nb__('New Notice') ?>
             </a>
         <?php else: ?>
             <span class="nb-hint">
-                &#128274; <?= _('Read-only: only Super Admin can create, edit or delete notices.') ?>
+                &#128274; <?= nb__('Read-only: only Super Admin can create, edit or delete notices.') ?>
             </span>
         <?php endif ?>
     </div>
@@ -52,24 +52,24 @@ $isSuperAdmin = $data['is_super_admin'];
     <?php if (empty($data['notices'])): ?>
         <div class="nb-empty-state">
             <span>&#128237;</span>
-            <p><?= _('No notices registered yet.') ?></p>
+            <p><?= nb__('No notices registered yet.') ?></p>
         </div>
     <?php else: ?>
         <div class="nb-filters">
             <input type="text" id="nb-search"
-                   placeholder="<?= _('Filter notices...') ?>"
+                   placeholder="<?= nb__('Filter notices...') ?>"
                    class="nb-search-input">
             <select id="nb-filter-tipo" class="nb-filter-select">
-                <option value=""><?= _('All types') ?></option>
+                <option value=""><?= nb__('All types') ?></option>
                 <?php foreach ($type_labels as $val => $label): ?>
                     <option value="<?= $val ?>"><?= $label ?></option>
                 <?php endforeach ?>
             </select>
             <select id="nb-filter-status" class="nb-filter-select">
-                <option value=""><?= _('All statuses') ?></option>
-                <option value="active"><?= _('Active') ?></option>
-                <option value="scheduled"><?= _('Scheduled') ?></option>
-                <option value="expired"><?= _('Expired') ?></option>
+                <option value=""><?= nb__('All statuses') ?></option>
+                <option value="active"><?= nb__('Active') ?></option>
+                <option value="scheduled"><?= nb__('Scheduled') ?></option>
+                <option value="expired"><?= nb__('Expired') ?></option>
             </select>
         </div>
 
@@ -84,7 +84,7 @@ $isSuperAdmin = $data['is_super_admin'];
                     }
                 }
                 if (!empty($notice['para_todos'])) {
-                    $grpName = '&#127760; ' . _('All groups');
+                    $grpName = '&#127760; ' . nb__('All groups');
                 }
                 $canEdit = $isSuperAdmin;
             ?>
@@ -103,10 +103,10 @@ $isSuperAdmin = $data['is_super_admin'];
                         <?php if ($canEdit): ?>
                         <div class="nb-card-actions">
                             <a href="zabbix.php?action=notice_board.edit&id=<?= (int) $notice['id'] ?>"
-                               class="nb-btn-icon" title="<?= _('Edit') ?>">&#9998;</a>
+                               class="nb-btn-icon" title="<?= nb__('Edit') ?>">&#9998;</a>
                             <a href="zabbix.php?action=notice_board.delete&id=<?= (int) $notice['id'] ?>"
-                               class="nb-btn-icon nb-btn-delete" title="<?= _('Delete') ?>"
-                               onclick="return confirm('<?= _('Confirm deletion?') ?>')">&#128465;</a>
+                               class="nb-btn-icon nb-btn-delete" title="<?= nb__('Delete') ?>"
+                               onclick="return confirm('<?= nb__('Confirm deletion?') ?>')">&#128465;</a>
                         </div>
                         <?php endif ?>
                     </div>

@@ -8,22 +8,22 @@
 $notice       = $data['notice'];
 $mode         = $data['mode'];
 $isSuperAdmin = $data['is_super_admin'];
-$title        = $mode === 'edit' ? _('Edit Notice') : _('New Notice');
+$title        = $mode === 'edit' ? nb__('Edit Notice') : nb__('New Notice');
 
 $types = [
-    'info'    => _('Informational'),
-    'success' => _('Resolved'),
-    'warning' => _('Warning'),
-    'danger'  => _('Critical / Urgent'),
-    'mudanca' => _('Change Request'),
-    'evento'  => _('Event / Maintenance'),
+    'info'    => nb__('Informational'),
+    'success' => nb__('Resolved'),
+    'warning' => nb__('Warning'),
+    'danger'  => nb__('Critical / Urgent'),
+    'mudanca' => nb__('Change Request'),
+    'evento'  => nb__('Event / Maintenance'),
 ];
 ?>
 <div class="nb-page-wrap">
     <div class="nb-header">
         <div class="nb-header-title">
             <a href="zabbix.php?action=notice_board.view" class="nb-back-btn">
-                &larr; <?= _('Back') ?>
+                &larr; <?= nb__('Back') ?>
             </a>
             <h1><?= $title ?></h1>
         </div>
@@ -33,7 +33,7 @@ $types = [
             <input type="hidden" name="id" value="<?= (int) $notice['id'] ?>">
 
             <div class="nb-form-group">
-                <label for="titulo"><?= _('Title') ?> <span class="required">*</span></label>
+                <label for="titulo"><?= nb__('Title') ?> <span class="required">*</span></label>
                 <input type="text" id="titulo" name="titulo"
                        value="<?= htmlspecialchars($notice['titulo']) ?>"
                        class="nb-input" required>
@@ -41,7 +41,7 @@ $types = [
 
             <div class="nb-form-row">
                 <div class="nb-form-group">
-                    <label for="tipo_borda"><?= _('Type / Border Color') ?></label>
+                    <label for="tipo_borda"><?= nb__('Type / Border Color') ?></label>
                     <select id="tipo_borda" name="tipo_borda" class="nb-input" onchange="nbLivePreview()">
                         <?php foreach ($types as $val => $label): ?>
                             <option value="<?= $val ?>"
@@ -53,9 +53,9 @@ $types = [
                 </div>
                 <div class="nb-form-group">
                     <label for="usrgrpid">
-                        <?= _('Visible to') ?>
+                        <?= nb__('Visible to') ?>
                         <?php if ($isSuperAdmin): ?>
-                            <span class="nb-hint"><?= _('Super Admin can select multiple groups') ?></span>
+                            <span class="nb-hint"><?= nb__('Super Admin can select multiple groups') ?></span>
                         <?php endif ?>
                     </label>
 
@@ -64,7 +64,7 @@ $types = [
                                 class="nb-input nb-multiselect" multiple size="5">
                             <option value="0"
                                 <?= !empty($notice['para_todos']) ? 'selected' : '' ?>>
-                                &#127760; <?= _('All user groups') ?>
+                                &#127760; <?= nb__('All user groups') ?>
                             </option>
                             <?php foreach ($data['groups'] as $g): ?>
                                 <option value="<?= (int) $g['usrgrpid'] ?>"
@@ -74,11 +74,11 @@ $types = [
                             <?php endforeach ?>
                         </select>
                         <span class="nb-hint" style="margin-top:4px">
-                            <?= _('Ctrl+click to select multiple. Selecting "All" ignores others.') ?>
+                            <?= nb__('Ctrl+click to select multiple. Selecting "All" ignores others.') ?>
                         </span>
                     <?php else: ?>
                         <select id="usrgrpid" name="usrgrpid[]" class="nb-input" required>
-                            <option value=""><?= _('Select...') ?></option>
+                            <option value=""><?= nb__('Select...') ?></option>
                             <?php foreach ($data['groups'] as $g): ?>
                                 <option value="<?= (int) $g['usrgrpid'] ?>"
                                     <?= (!empty($notice['usrgrpid']) && (int) $notice['usrgrpid'] === (int) $g['usrgrpid']) ? 'selected' : '' ?>>
@@ -92,13 +92,13 @@ $types = [
 
             <div class="nb-form-row">
                 <div class="nb-form-group">
-                    <label for="inicio"><?= _('Display from') ?></label>
+                    <label for="inicio"><?= nb__('Display from') ?></label>
                     <input type="datetime-local" id="inicio" name="inicio"
                            value="<?= date('Y-m-d\TH:i', strtotime($notice['inicio'])) ?>"
                            class="nb-input" required onchange="nbLivePreview()">
                 </div>
                 <div class="nb-form-group">
-                    <label for="fim"><?= _('Display until') ?></label>
+                    <label for="fim"><?= nb__('Display until') ?></label>
                     <input type="datetime-local" id="fim" name="fim"
                            value="<?= date('Y-m-d\TH:i', strtotime($notice['fim'])) ?>"
                            class="nb-input" required onchange="nbLivePreview()">
@@ -107,16 +107,16 @@ $types = [
 
             <div class="nb-form-group">
                 <label>
-                    <?= _('Content') ?>
-                    <span class="nb-hint"><?= _('Supports Markdown and HTML') ?></span>
+                    <?= nb__('Content') ?>
+                    <span class="nb-hint"><?= nb__('Supports Markdown and HTML') ?></span>
                 </label>
                 <div class="nb-editor-tabs">
                     <button type="button" class="nb-tab active" id="tab-editor"
-                            onclick="nbSetTab('editor')"><?= _('Editor') ?></button>
+                            onclick="nbSetTab('editor')"><?= nb__('Editor') ?></button>
                     <button type="button" class="nb-tab" id="tab-preview"
-                            onclick="nbSetTab('preview')"><?= _('Preview') ?></button>
+                            onclick="nbSetTab('preview')"><?= nb__('Preview') ?></button>
                     <button type="button" class="nb-tab" id="tab-split"
-                            onclick="nbSetTab('split')"><?= _('Split') ?></button>
+                            onclick="nbSetTab('split')"><?= nb__('Split') ?></button>
                 </div>
                 <div class="nb-editor-wrap" id="nb-editor-wrap">
                     <textarea id="conteudo" name="conteudo" class="nb-textarea" rows="14"
@@ -128,10 +128,10 @@ $types = [
 
             <div class="nb-form-actions">
                 <a href="zabbix.php?action=notice_board.view" class="btn-action btn-cancel">
-                    <?= _('Cancel') ?>
+                    <?= nb__('Cancel') ?>
                 </a>
                 <button type="submit" class="btn-action btn-save">
-                    <?= $mode === 'edit' ? _('Save Changes') : _('Create Notice') ?>
+                    <?= $mode === 'edit' ? nb__('Save Changes') : nb__('Create Notice') ?>
                 </button>
             </div>
         </form>

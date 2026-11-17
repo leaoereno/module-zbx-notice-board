@@ -3,29 +3,29 @@
  * @var array $data['notices']
  */
 $type_labels = [
-    'info'    => _('Informational'),
-    'success' => _('Resolved'),
-    'warning' => _('Warning'),
-    'danger'  => _('Critical / Urgent'),
-    'mudanca' => _('Change Request'),
-    'evento'  => _('Event / Maintenance'),
+    'info'    => nb__('Informational'),
+    'success' => nb__('Resolved'),
+    'warning' => nb__('Warning'),
+    'danger'  => nb__('Critical / Urgent'),
+    'mudanca' => nb__('Change Request'),
+    'evento'  => nb__('Event / Maintenance'),
 ];
 ?>
 <div class="nb-dash-page">
     <div class="nb-dash-header">
         <h1 class="nb-dash-title">
             <span class="nb-dash-icon">&#128203;</span>
-            <?= _('Notice Board') ?>
+            <?= nb__('Notice Board') ?>
         </h1>
         <p class="nb-dash-subtitle">
-            <?= _('Notices, events and change requests for your team.') ?>
+            <?= nb__('Notices, events and change requests for your team.') ?>
         </p>
     </div>
 
     <?php if (empty($data['notices'])): ?>
         <div class="nb-empty-state">
             <span>&#128237;</span>
-            <p><?= _('No active notices for your group at this time.') ?></p>
+            <p><?= nb__('No active notices for your group at this time.') ?></p>
         </div>
     <?php else: ?>
         <div class="nb-dash-grid" id="nb-grid">
@@ -37,7 +37,7 @@ $type_labels = [
                      data-badge="<?= htmlspecialchars($type_labels[$notice['tipo_borda']] ?? $notice['tipo_borda']) ?>"
                      data-usuario="<?= htmlspecialchars($notice['usuario_nome'] ?? 'N/A') ?>"
                      data-criado="<?= (new DateTime($notice['criado_em']))->format('d/m/Y H:i') ?>"
-                     data-fim="<?= _('Until') ?> <?= (new DateTime($notice['fim']))->format('d/m/Y H:i') ?>"
+                     data-fim="<?= nb__('Until') ?> <?= (new DateTime($notice['fim']))->format('d/m/Y H:i') ?>"
                      onclick="nbOpenModal(this)">
                     <div class="nb-card-header">
                         <div class="nb-card-meta">
@@ -46,7 +46,7 @@ $type_labels = [
                             </span>
                         </div>
                         <span class="nb-validity-chip">
-                            <?= _('Until') ?> <?= (new DateTime($notice['fim']))->format('d/m/Y H:i') ?>
+                            <?= nb__('Until') ?> <?= (new DateTime($notice['fim']))->format('d/m/Y H:i') ?>
                         </span>
                     </div>
                     <h3 class="nb-card-title"><?= htmlspecialchars($notice['titulo']) ?></h3>
@@ -58,7 +58,7 @@ $type_labels = [
                             <span>&#128336; <?= (new DateTime($notice['criado_em']))->format('d/m/Y H:i') ?></span>
                         </div>
                     </div>
-                    <div class="nb-card-expand-hint"><?= _('Click to expand') ?> &#8599;</div>
+                    <div class="nb-card-expand-hint"><?= nb__('Click to expand') ?> &#8599;</div>
                 </div>
             <?php endforeach ?>
         </div>
@@ -74,7 +74,7 @@ $type_labels = [
                 <span class="nb-validity-chip" id="nb-modal-fim"></span>
             </div>
             <button class="nb-modal-close" onclick="nbCloseModal(null)"
-                    title="<?= _('Close') ?>">&#10005;</button>
+                    title="<?= nb__('Close') ?>">&#10005;</button>
         </div>
         <h2 class="nb-modal-title" id="nb-modal-title"></h2>
         <div class="nb-modal-body nb-rendered" id="nb-modal-body"></div>

@@ -10,10 +10,10 @@ msgstr ""
 
 # Menu
 msgid "Notice Board"
-msgstr "Quadro de Avisos"
+msgstr "Mural de Recados"
 
-msgid "Monitoring"
-msgstr "Monitoramento"
+msgid "Services"
+msgstr "Serviços"
 
 # Tipos de aviso
 msgid "Informational"
